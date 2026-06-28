@@ -1,138 +1,58 @@
-# Agentforce Lead Agent
+# Salesforce DX Project
 
-Production-ready Salesforce Agentforce implementation with AI-powered 
-lead qualification, enrichment, and automated outreach.
+Salesforce DX is a development approach that brings source-driven development, team collaboration, and continuous integration to the Salesforce Platform. Instead of working directly in an org through a web browser, you work with metadata as source files in a local DX project, track changes in version control, and deploy through automated processes.
 
-## What Problem Does This Solve?
-
-Sales teams waste hours manually qualifying leads, researching prospects, 
-drafting outreach emails, and notifying reps. This agent automates the 
-entire workflow end-to-end — from lead creation to rep notification — 
-in seconds, with zero manual intervention.
-
-**Before:** SDR spends 20 minutes per lead on research + outreach  
-**After:** Agent completes full qualification cycle in under 60 seconds
-
-## Architecture
-
-[DIAGRAM GOES HERE — we build this next]
-
-## How It Works
-
-1. **Trigger** — A new Lead is created in Salesforce. A Record-Triggered 
-   Flow fires automatically and dispatches the Agentforce Bot in 
-   Autonomous mode.
-
-2. **Get Lead Details** — Agent looks up the Lead and pulls all 
-   available data from Salesforce.
-
-3. **Enrich Lead** — Agent scores the lead and updates custom fields:
-   `Lead_Score__c`, `Lead_Tier__c`, `Is_Enriched__c`
-
-4. **Draft & Send Outreach Email** — Using Generative AI + pre-built 
-   templates, the agent writes a personalized email and sends it 
-   directly to the prospect.
-
-5. **Notify Rep via Chatter** — Agent posts an update to Salesforce 
-   Chatter so the assigned Sales Rep knows the lead is qualified 
-   and contacted.
-
-## Components
-
-| Component | Type | Purpose |
-|---|---|---|
-| Lead_Agent_v2 | Agentforce Bot | AI reasoning engine |
-| Lead_AI_Agent | Record-Triggered Flow | Entry point trigger |
-| Get_Lead_Details | Sub-Flow | Lead data retrieval |
-| Enrich_Lead_Record | Sub-Flow | Scoring + enrichment |
-| Draft_and_Send_Outreach_Email | Sub-Flow | GenAI email generation |
-| Notify_Rep_Chatter | Sub-Flow | Rep notification |
-| AI_Outreach_* | Email Templates | Industry-specific templates |
-| Agentforce_Lead_Access | Permission Set | Agent access control |
-
-## Custom Fields on Lead Object
-
-| Field | Purpose |
-|---|---|
-| Lead_Score__c | AI-calculated score 0-100 |
-| Lead_Tier__c | Classification: Hot / Warm / Cold |
-| Is_Enriched__c | Flag: has agent processed this lead |
-| Company_Size_Bucket__c | SMB / Mid-Market / Enterprise |
-| ProductInterest__c | Detected product interest |
-
-## Problems Faced & How They Were Solved
-
-**1. Agent not triggering autonomously**  
-The Agentforce Bot must be invoked via a Flow in Autonomous mode — 
-it cannot self-trigger. Solved by adding a Record-Triggered Flow 
-(Lead_AI_Agent) as the entry point that dispatches the bot in the 
-background.
-
-**2. Permission errors on agent actions**  
-Agent was failing silently on Chatter posts and email sends. Root cause 
-was missing object-level permissions on the Permission Set. Solved by 
-explicitly granting Lead read/write, Chatter create, and Flow execute 
-permissions to Agentforce_Lead_Access.
-
-**3. GenAI email tone inconsistency**  
-Early drafts were too generic. Solved by creating industry-specific 
-templates (Manufacturing, Technology, Default) with structured merge 
-fields that give the GenAI model enough context to personalize correctly.
+This project template gets you started with the tools and structure you need to build Salesforce applications using source control, scratch orgs, and the Salesforce CLI.
 
 ## Prerequisites
 
-Before deploying, you need:
+Before you start, make sure you have:
 
-- Salesforce org with **Agentforce enabled**
-- **Einstein generative AI** credits active in your org
-- Salesforce CLI installed: `npm install -g @salesforce/cli`
-- Git installed
+- **Salesforce CLI** - Download from [developer.salesforce.com/tools/salesforcecli](https://developer.salesforce.com/tools/salesforcecli). See [Install Salesforce CLI](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm) for details.
+- **VS Code with Salesforce Extension Pack** - See [Installation Instructions](https://developer.salesforce.com/docs/platform/sfvscode-extensions/guide/install.html) for details. Includes the Agentforce Vibes extension.
+- **A development org** - Sign up for a free Developer Edition org [here](https://developer.salesforce.com/signup).
+- **Dev Hub enabled** (optional, required to create scratch orgs) - You can enable Dev Hub in your development org under Setup > Dev Hub.  See [Provide Developers Access to Salesforce DX Tools](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_setup_dx_tools.htm).
 
-Check Agentforce is enabled:  
-Setup → Einstein → Generative AI → Enable
+## Project Structure
 
-## Deployment
+Your DX project follows this structure:
 
-```bash
-# 1. Authenticate to your org
-sf org login web
+- **`force-app/main/default/`** - Your metadata source files live in this default package directory. You can configure additional package directories in the `sfdx-project.json` file.
+- **`config/`** - Scratch org definitions and project settings
+- **`scripts/`** - Automation scripts for common tasks
+- **`sfdx-project.json`** - Project manifest that defines package directories, namespace, API version, and other project-level settings
 
-# 2. Deploy all components
-sf project deploy start
+See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm).
 
-# 3. Assign permission set to your user
-sf org assign permset --name Agentforce_Lead_Access
+## Get Started
 
-# 4. Assign permission set to the Agent user
-sf org assign permset --name Lead_Agent_Access
-```
+Ready to start developing? The [Get Started with Salesforce DX](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_get_started_dx.htm) guide walks you through your first project, from creating a scratch org to creating a simple Apex class or LWC to deploying your code to a sandbox.
 
-## Testing the Agent
+## Common Salesforce CLI Commands
 
-1. Open Salesforce and create a new Lead
-2. Wait 30-60 seconds for the trigger to fire
-3. Check the Lead record — `Is_Enriched__c` should be checked
-4. Check the Lead's Chatter feed — rep notification should appear
-5. Check the prospect's email inbox — outreach email should be sent
+Here are common CLI commands that you'll use the most:
 
-Or test manually via Agent Builder:  
-Setup → Agents → Lead_Agent_v2 → Preview
+- `sf org login web`: Authorize an org
+- `sf org open`: Open your org in a browser
+- `sf org create scratch`: Create a scratch org
+- `sf project deploy start`: Deploy metadata to your org
+- `sf project retrieve start`: Retrieve metadata from your org
+- `sf template generate <artifact>`: Scaffold new components, such as Apex classes and triggers, LWC components, Lightning apps, and more
+- `sf apex <command>`: Run Apex tests, run anonymous Apex blocks, and view logs
+- `sf data <command>`: Work with test data
+- `sf alias <command>`: Manage org aliases
+- `sf config <command>`: Configure CLI settings
 
-## Demo
+## Use Agentforce Vibes to Build Lightning Apps
 
-[SCREENSHOT OF AGENT WORKING IN SANDBOX GOES HERE]
+Transform your ideas into custom Lightning apps that extend CRM workflows directly in Lightning Experience. Through natural conversations with Agentforce Vibes, implement custom objects and fields, complex business logic, and dynamic UI components. See [Build a Lightning App Using Agentforce Vibes](https://developer.salesforce.com/docs/platform/einstein-for-devs/guide/lexapp-overview.html).
 
-## Key Insight
+## Additional Resources
 
-**The agent is a trigger, not an executor.** Agentforce interprets 
-natural language and routes to your Flows. Your existing validation 
-rules, sharing rules, and Apex logic all still apply. You are not 
-replacing your Salesforce logic — you are adding an AI brain on top.
+- [Agentforce Vibes Developer Guide](https://developer.salesforce.com/docs/platform/einstein-for-devs/guide/einstein-overview.html)
+- [Salesforce CLI Installation Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
+- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/)
+- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/)
+- [Salesforce CLI Plugin Development Guide](https://developer.salesforce.com/docs/platform/salesforce-cli-plugin/guide/conceptual-overview.html)
+- [Salesforce VS Code Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
 
-## Tech Stack
-
-- Salesforce Agentforce (Einstein Copilot)
-- Salesforce Flows (Record-Triggered + Sub-Flows)
-- Einstein Generative AI
-- Salesforce Chatter
-- SFDX / Salesforce CLI
