@@ -120,7 +120,7 @@ Setup → Agents → Lead_Agent_v2 → Preview
 
 ## Demo
 
-[SCREENSHOT OF AGENT WORKING IN SANDBOX GOES HERE]
+![Lead Agent in action](docs/Lead Agent.jpg)
 
 ## Key Insight
 
@@ -137,6 +137,5 @@ replacing your Salesforce logic — you are adding an AI brain on top.
 - Salesforce Chatter
 - SFDX / Salesforce CLI
 
-## Demo
 
-![Lead Agent in action](docs/Lead Agent.jpg)
+
