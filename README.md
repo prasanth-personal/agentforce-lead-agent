@@ -15,7 +15,7 @@ in seconds, with zero manual intervention.
 
 ## Architecture
 
-[DIAGRAM GOES HERE — we build this next]
+![Lead Agent Architecture](docs/lead_agent_architecture.png)
 
 ## How It Works
 
@@ -136,3 +136,7 @@ replacing your Salesforce logic — you are adding an AI brain on top.
 - Einstein Generative AI
 - Salesforce Chatter
 - SFDX / Salesforce CLI
+
+## Demo
+
+![Lead Agent in action](docs/Lead Agent.jpg)
