@@ -1,0 +1,11 @@
+Hi {!Lead.FirstName},
+
+I noticed {!Lead.Company} is scaling fast in the 
+Technology space — we've helped similar manufacturing teams reduce 
+operational costs by automating order and inventory workflows.
+
+Worth a 15-minute call this week?
+Book directly here: https://calendly.com/elixir-demo
+
+Best,
+The Elixir Industries Team
