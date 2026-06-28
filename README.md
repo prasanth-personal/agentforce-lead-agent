@@ -120,7 +120,7 @@ Setup → Agents → Lead_Agent_v2 → Preview
 
 ## Demo
 
-![Lead Agent in action](docs/Lead Agent.jpg)
+![Lead Agent in action](docs/Lead%20Agent.jpg)
 
 ## Key Insight
 
@@ -136,6 +136,4 @@ replacing your Salesforce logic — you are adding an AI brain on top.
 - Einstein Generative AI
 - Salesforce Chatter
 - SFDX / Salesforce CLI
-
-
 
