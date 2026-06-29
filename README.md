@@ -137,5 +137,54 @@ replacing your Salesforce logic — you are adding an AI brain on top.
 - Salesforce Chatter
 - SFDX / Salesforce CLI
 
+## Production Considerations
+
+This project was built to learn Agentforce architecture hands-on. 
+Here is what would need to change before running this in a real 
+enterprise environment.
+
+### Bulk Processing
+**Current:** Record-Triggered Flow fires per Lead — fails at scale.  
+**Production fix:** Use Platform Events to decouple trigger from 
+processing. Batch leads into queues, not individual agent sessions.
+
+### Error Handling
+**Current:** No retry logic. Silent failures.  
+**Production fix:** Add fault paths in every sub-flow. 
+Log failures to a custom Error_Log__c object. 
+Alert admins via email or Slack on failure.
+
+### Sensitive Data / PII
+**Current:** All lead data passes directly into GenAI model.  
+**Production fix:** Add a data classification check before GenAI 
+calls. Mask or exclude sensitive fields (health, financial, legal) 
+before they reach the model. Align with GDPR / HIPAA as required.
+
+### GenAI Output Validation
+**Current:** Email is sent immediately after GenAI drafts it.  
+**Production fix:** Add a validation step to check output for 
+hallucinations, brand compliance, and tone before sending. 
+High-value leads should have human-in-the-loop approval.
+
+### Scalability
+**Current:** Agentforce autonomous mode is designed for 
+human-assisted workflows, not bulk automation.  
+**Production fix:** For bulk processing, use Apex Batch + 
+direct LLM API calls. Reserve Agentforce for interactive, 
+conversational use cases.
+
+### Security
+**Current:** Permission Set grants broad access.  
+**Production fix:** Scope permissions tightly per agent action. 
+Apply field-level security on sensitive Lead fields. 
+Audit agent activity via Shield Event Monitoring.
+
+---
+
+> This project demonstrates Agentforce architecture, reasoning 
+> instruction design, and Flow-as-action patterns. 
+> The production considerations above represent the gap between 
+> a learning implementation and an enterprise deployment.
+
 
 
