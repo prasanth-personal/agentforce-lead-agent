@@ -19,7 +19,7 @@ in seconds, with zero manual intervention.
 
 ## How It Works
 
-1. **Trigger** — A new Lead is created in Salesforce. A Record-Triggered 
+1. **Trigger** — A new Lead is created or updated in Salesforce. A Record-Triggered 
    Flow fires automatically and dispatches the Agentforce Bot in 
    Autonomous mode.
 
